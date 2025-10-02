@@ -25,6 +25,10 @@ class TransportService:
     def delete_truck(self, truck_id: int) -> bool:
         """トラック削除"""
         return self.repository.delete_truck(truck_id) 
+    def update_truck(self, truck_id: int, update_data: dict) -> bool:
+        """トラック更新"""
+        return self.repository.update_truck(truck_id, update_data)
+
     def create_container(self, container_data: dict) -> bool:
         container_data.pop("max_volume", None)   # 生成列なので除外
         container_data.pop("created_at", None)   # DBに任せる
@@ -34,8 +38,10 @@ class TransportService:
         update_data.pop("max_volume", None)
         update_data.pop("created_at", None)
         return self.repository.update_container(container_id, update_data)
+    def delete_container(self, container_id: int) -> bool:
+        """容器削除"""
+        return self.repository.delete_container(container_id)
 
-        
     def create_truck(self, truck_data: dict) -> bool:
         """トラック作成"""
         return self.repository.save_truck(truck_data)
