@@ -15,8 +15,8 @@ class TransportService:
     
     def get_containers(self) -> List[Container]:
         """容器一覧取得"""
-        df = self.repository.get_containers()
-        return [Container(**row) for row in df.to_dict('records')]
+        return self.repository.get_containers()  # そのまま返す
+
     
     def get_trucks(self):
         """トラック一覧取得"""
@@ -26,9 +26,16 @@ class TransportService:
         """トラック削除"""
         return self.repository.delete_truck(truck_id) 
     def create_container(self, container_data: dict) -> bool:
-        """容器作成"""
+        container_data.pop("max_volume", None)   # 生成列なので除外
+        container_data.pop("created_at", None)   # DBに任せる
         return self.repository.save_container(container_data)
-    
+
+    def update_container(self, container_id: int, update_data: dict) -> bool:
+        update_data.pop("max_volume", None)
+        update_data.pop("created_at", None)
+        return self.repository.update_container(container_id, update_data)
+
+        
     def create_truck(self, truck_data: dict) -> bool:
         """トラック作成"""
         return self.repository.save_truck(truck_data)

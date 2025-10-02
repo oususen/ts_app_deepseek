@@ -2,37 +2,33 @@
 from typing import List, Optional
 import pandas as pd
 from datetime import time
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, Time
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Time, Float 
 from sqlalchemy.orm import declarative_base
+from sqlalchemy import Column, Integer, String, Float, Boolean, TIMESTAMP
+from sqlalchemy.orm import declarative_base
+
 Base = declarative_base()
 
-class Container:
-    """容器モデル - container_capacityテーブルに合わせる"""
-    
-    def __init__(self, id: int, name: str, width: float, depth: float, height: float, 
-                 max_weight: float, max_volume: Optional[float] = None, can_mix: bool = True):
-        self.id = id
-        self.name = name
-        self.width = width
-        self.depth = depth
-        self.height = height
-        self.max_weight = max_weight
-        self.max_volume = max_volume
-        self.can_mix = can_mix
-    
-    @classmethod
-    def from_dict(cls, data: dict):
-        """辞書からモデルを作成"""
-        return cls(
-            id=data.get('id'),
-            name=data.get('name'),
-            width=data.get('width'),
-            depth=data.get('depth'),
-            height=data.get('height'),
-            max_weight=data.get('max_weight'),
-            max_volume=data.get('max_volume'),
-            can_mix=bool(data.get('can_mix', True))
-        )
+
+from sqlalchemy import Column, Integer, String, Float, Boolean, TIMESTAMP, Computed
+
+class Container(Base):
+    __tablename__ = "container_capacity"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(50), nullable=False)
+    width = Column(Integer, nullable=False)   # mm
+    depth = Column(Integer, nullable=False)   # mm
+    height = Column(Integer, nullable=False)  # mm
+    max_weight = Column(Integer, nullable=False, default=0)
+    max_volume = Column(Float, Computed("((width * depth * height) / 1000000000.0)", persisted=True))
+    can_mix = Column(Boolean, default=True)
+    created_at = Column(TIMESTAMP, nullable=True, server_default="CURRENT_TIMESTAMP")
+
+    def __repr__(self):
+        return f"<Container(id={self.id}, name='{self.name}', size={self.width}x{self.depth}x{self.height}, max_weight={self.max_weight}, max_volume={self.max_volume}, can_mix={self.can_mix})>"
+
+
 class Truck(Base):
     """トラックモデル - SQLAlchemy ORM"""
     __tablename__ = "truck_master"
