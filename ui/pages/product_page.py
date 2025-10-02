@@ -14,7 +14,7 @@ class ProductPage:
 
         # 新規登録
         st.subheader("新規製品登録")
-        product_data = FormComponents.product_form()
+        product_data = FormComponents.product_form(self.service.get_containers())
         if product_data:
             if self.service.create_product(product_data):
                 st.success(f"製品 '{product_data['name']}' を登録しました")

@@ -1,10 +1,8 @@
 from sqlalchemy.exc import SQLAlchemyError
 import pandas as pd
-from typing import Optional, List, Dict, Any
 
 from .database_manager import DatabaseManager
-from domain.models.product import Product
-from domain.models.production import ProductionConstraint
+from domain.models.product import Product, ProductConstraint
 
 
 class ProductRepository:
@@ -20,15 +18,12 @@ class ProductRepository:
             products = session.query(Product).order_by(Product.product_code).all()
             return pd.DataFrame([{
                 "id": p.id,
-                "data_no": p.data_no,
-                "factory": p.factory,
                 "product_code": p.product_code,
                 "product_name": p.product_name,
-                "inspection_category": p.inspection_category or "",
-                "container_width": float(p.container_width or 0.0),
-                "container_depth": float(p.container_depth or 0.0),
-                "container_height": float(p.container_height or 0.0),
-                "stackable": bool(p.stackable) if p.stackable is not None else False
+                "capacity": p.capacity,
+                "used_container_id": p.used_container_id,
+                "container_name": p.used_container.name if p.used_container else None,
+                "created_at": p.created_at
             } for p in products if p is not None])
         except SQLAlchemyError as e:
             print(f"製品取得エラー: {e}")
@@ -41,8 +36,8 @@ class ProductRepository:
         session = self.db.get_session()
         try:
             constraints = (
-                session.query(ProductionConstraint, Product)
-                .join(Product, ProductionConstraint.product_id == Product.id, isouter=True)
+                session.query(ProductConstraint, Product)
+                .join(Product, ProductConstraint.product_id == Product.id, isouter=True)
                 .order_by(Product.product_code)
                 .all()
             )
@@ -54,8 +49,7 @@ class ProductRepository:
                 "volume_per_unit": float(c.volume_per_unit or 0.0),
                 "is_transport_constrained": bool(c.is_transport_constrained),
                 "product_code": p.product_code if p else "",
-                "product_name": p.product_name if p else "",
-                "inspection_category": p.inspection_category if p else ""
+                "product_name": p.product_name if p else ""
             } for c, p in constraints if c is not None])
         except SQLAlchemyError as e:
             print(f"製品制約取得エラー: {e}")
@@ -67,9 +61,9 @@ class ProductRepository:
         """製品制約保存（全削除 → 一括挿入）"""
         session = self.db.get_session()
         try:
-            session.query(ProductionConstraint).delete()
+            session.query(ProductConstraint).delete()
             for _, row in constraints_df.iterrows():
-                constraint = ProductionConstraint(
+                constraint = ProductConstraint(
                     product_id=int(row.get("product_id", 0)),
                     daily_capacity=int(row.get("daily_capacity", 0)),
                     smoothing_level=float(row.get("smoothing_level", 0.0)),
@@ -91,15 +85,10 @@ class ProductRepository:
         session = self.db.get_session()
         try:
             product = Product(
-                data_no=product_data.get("data_no"),
-                factory=product_data.get("factory"),
                 product_code=product_data.get("product_code"),
                 product_name=product_data.get("product_name"),
-                inspection_category=product_data.get("inspection_category", "A"),
-                container_width=float(product_data.get("container_width") or 0.0),
-                container_depth=float(product_data.get("container_depth") or 0.0),
-                container_height=float(product_data.get("container_height") or 0.0),
-                stackable=bool(product_data.get("stackable", False))
+                capacity=product_data.get("capacity"),
+                used_container_id=product_data.get("used_container_id"),
             )
             session.add(product)
             session.commit()
@@ -107,6 +96,41 @@ class ProductRepository:
         except SQLAlchemyError as e:
             session.rollback()
             print(f"製品登録エラー: {e}")
+            return False
+        finally:
+            session.close()
+
+    def update_product(self, product_id: int, update_data: dict) -> bool:
+        """製品を更新"""
+        session = self.db.get_session()
+        try:
+            product = session.query(Product).get(product_id)
+            if not product:
+                return False
+            for key, value in update_data.items():
+                setattr(product, key, value)
+            session.commit()
+            return True
+        except SQLAlchemyError as e:
+            session.rollback()
+            print(f"製品更新エラー: {e}")
+            return False
+        finally:
+            session.close()
+
+    def delete_product(self, product_id: int) -> bool:
+        """製品を削除"""
+        session = self.db.get_session()
+        try:
+            product = session.query(Product).get(product_id)
+            if not product:
+                return False
+            session.delete(product)
+            session.commit()
+            return True
+        except SQLAlchemyError as e:
+            session.rollback()
+            print(f"製品削除エラー: {e}")
             return False
         finally:
             session.close()

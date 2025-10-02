@@ -1,0 +1,15 @@
+id,data_no,factory,client_code,calculation_date,production_complete_date,modified_factory,product_category,product_code,ac_code,processing_content,product_name,delivery_location,box_type,capacity,grouping_category,form_category,inspection_category,ordering_category,regular_replenishment_category,lead_time,fixed_point_days,shipping_factory,client_product_code,purchasing_org,item_group,processing_type,inventory_transfer_category,created_at,container_width,container_depth,container_height,stackable
+1,36,21,31499,2045-08-08,NULL,,1,V053143521,130,,ﾌﾞﾗｹﾂﾄ(ﾌｱﾝ),5476,W1,8,,,N,,0,0,0,,,AA01,A011,10,0,"2025-09-14 03:31:37",NULL,NULL,NULL,1
+2,36,21,31499,2045-08-08,NULL,,1,V053143615,130,,ｽﾃ-(ﾗｼﾞｴ-ﾀ),5476,W2,3,,,N,,0,0,0,,,AA01,A011,10,0,"2025-09-14 03:31:37",NULL,NULL,NULL,1
+3,36,21,31499,2045-08-08,NULL,,1,V053103705,130,,"ﾌﾚ-ﾑ,ｺﾝﾌﾟ(ﾌﾛﾝﾄ)",ZGHC,SP,3,,,NS,,0,0,0,,,AA01,A011,10,0,"2025-09-14 03:31:37",NULL,NULL,NULL,1
+4,36,21,31499,2045-08-08,NULL,,1,V053104642,130,,"ｶﾊﾞ-,ｺﾝﾌﾟ(ｴｱｺﾝ)",ZGHC,SP,8,,,N,,0,0,0,,,AA01,A011,10,0,"2025-09-14 03:31:37",NULL,NULL,NULL,1
+5,36,21,31499,2045-08-08,NULL,,1,V053904703,130,,"ﾌﾚ-ﾑ,ｺﾝﾌﾟ(ﾌﾛﾝﾄ)",ZGHC,SP,3,,,NS,,0,0,0,,,AA01,A011,10,0,"2025-09-14 03:31:37",NULL,NULL,NULL,1
+6,36,21,31499,2045-08-08,NULL,,1,V065103702,130,,"ﾌﾚ-ﾑ,ｺﾝﾌﾟ(ﾌﾛﾝﾄ)",ZGHC,SP,3,,,NS,,0,0,0,,,AA01,A011,10,0,"2025-09-14 03:31:37",NULL,NULL,NULL,1
+7,36,21,31499,2045-08-08,NULL,,1,V065104641,130,,"ｶﾊﾞ-,ｺﾝﾌﾟ(ｴｱｺﾝ)",ZGHC,SP,8,,,N,,0,0,0,,,AA01,A011,10,0,"2025-09-14 03:31:37",NULL,NULL,NULL,1
+8,36,21,31499,2045-08-08,NULL,,1,V065104702,130,,"ﾌﾚ-ﾑ,ｺﾝﾌﾟ(ﾌﾛﾝﾄ)",ZGHC,SP,3,,,NS,,0,0,0,,,AA01,A011,10,0,"2025-09-14 03:31:37",NULL,NULL,NULL,1
+9,36,21,31499,2045-09-09,NULL,,1,V065103703,130,,"ﾌﾚ-ﾑ,ｺﾝﾌﾟ(ﾌﾛﾝﾄ)",ZGHC,SP,3,,,FS,,0,0,0,,,AA01,A011,10,0,"2025-09-14 04:12:17",NULL,NULL,NULL,1
+10,36,21,31499,2045-09-09,NULL,,1,V065103703,130,,"ﾌﾚ-ﾑ,ｺﾝﾌﾟ(ﾌﾛﾝﾄ)",ZGHC,SP,3,,,NS,,0,0,0,,,AA01,A011,10,0,"2025-09-14 04:12:17",NULL,NULL,NULL,1
+11,36,21,31499,2045-09-09,NULL,,1,V065104642,130,,"ｶﾊﾞ-,ｺﾝﾌﾟ(ｴｱｺﾝ)",ZGHC,SP,8,,,F,,0,0,0,,,AA01,A011,10,0,"2025-09-14 04:12:17",NULL,NULL,NULL,1
+12,36,21,31499,2045-09-09,NULL,,1,V065104642,130,,"ｶﾊﾞ-,ｺﾝﾌﾟ(ｴｱｺﾝ)",ZGHC,SP,8,,,N,,0,0,0,,,AA01,A011,10,0,"2025-09-14 04:12:17",NULL,NULL,NULL,1
+13,36,21,31499,2045-09-09,NULL,,1,V065104703,130,,"ﾌﾚ-ﾑ,ｺﾝﾌﾟ(ﾌﾛﾝﾄ)",ZGHC,SP,3,,,FS,,0,0,0,,,AA01,A011,10,0,"2025-09-14 04:12:17",NULL,NULL,NULL,1
+14,36,21,31499,2045-09-09,NULL,,1,V065104703,130,,"ﾌﾚ-ﾑ,ｺﾝﾌﾟ(ﾌﾛﾝﾄ)",ZGHC,SP,3,,,NS,,0,0,0,,,AA01,A011,10,0,"2025-09-14 04:12:17",NULL,NULL,NULL,1

@@ -10,7 +10,9 @@ from ui.pages.dashboard_page import DashboardPage
 from ui.pages.constraints_page import ConstraintsPage
 from ui.pages.production_page import ProductionPage
 from ui.pages.transport_page import TransportPage
+from ui.pages.product_page import ProductPage
 from config import APP_CONFIG
+from services.product_service import ProductService
 class ProductionPlanningApp:
     """生産計画アプリケーション - メイン制御クラス"""
     
@@ -21,13 +23,15 @@ class ProductionPlanningApp:
         # サービス層初期化
         self.production_service = ProductionService(self.db)
         self.transport_service = TransportService(self.db)
+        self.product_service = ProductService(self.db)
         
         # ページ初期化
         self.pages = {
             "ダッシュボード": DashboardPage(self.production_service),
             "制限設定": ConstraintsPage(self.production_service),
             "生産計画": ProductionPage(self.production_service),
-            "配送便計画": TransportPage(self.transport_service)
+            "配送便計画": TransportPage(self.transport_service),
+            "製品管理": ProductPage(self.product_service)
         }
     
     def run(self):

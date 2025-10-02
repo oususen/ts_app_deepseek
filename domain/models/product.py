@@ -1,156 +1,56 @@
-# app/domain/models/product.py
-from dataclasses import dataclass
-from typing import Optional
-from datetime import date
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, TIMESTAMP
+from sqlalchemy.orm import relationship
+from sqlalchemy.sql import text
+from sqlalchemy.orm import declarative_base
+from domain.models.transport import Container
 
-@dataclass
-class Product:
-    """製品モデル - 実際のproductsテーブル構造に合わせる"""
-    id: int
-    data_no: Optional[int] = None
-    factory: Optional[str] = None
-    client_code: Optional[int] = None
-    calculation_date: Optional[date] = None
-    production_complete_date: Optional[date] = None
-    modified_factory: Optional[str] = None
-    product_category: Optional[str] = None
-    product_code: Optional[str] = None
-    ac_code: Optional[str] = None
-    processing_content: Optional[str] = None
-    product_name: Optional[str] = None
-    delivery_location: Optional[str] = None
-    box_type: Optional[str] = None
-    capacity: Optional[int] = None
-    grouping_category: Optional[str] = None
-    form_category: Optional[str] = None
-    inspection_category: Optional[str] = None
-    ordering_category: Optional[str] = None
-    regular_replenishment_category: Optional[str] = None
-    lead_time: Optional[int] = None
-    fixed_point_days: Optional[int] = None
-    shipping_factory: Optional[str] = None
-    client_product_code: Optional[str] = None
-    purchasing_org: Optional[str] = None
-    item_group: Optional[str] = None
-    processing_type: Optional[str] = None
-    inventory_transfer_category: Optional[str] = None
-    container_width: Optional[int] = None
-    container_depth: Optional[int] = None
-    container_height: Optional[int] = None
-    stackable: Optional[bool] = True
-    created_at: Optional[str] = None
-    
-    @classmethod
-    def from_dict(cls, data: dict):
-        """辞書からモデルを作成（余分なキーを無視）"""
-        valid_fields = {}
-        for field_name, field_type in cls.__annotations__.items():
-            if field_name in data and data[field_name] is not None:
-                valid_fields[field_name] = data[field_name]
-        return cls(**valid_fields)
+Base = declarative_base()
 
-@dataclass
-class ProductConstraint:
-    """製品制約モデル - production_constraintsテーブル構造に合わせる"""
-    
-    product_id: int
-    id: Optional[int] = None  # デフォルト値ありの引数を後に
-    daily_capacity: int = 1000
-    smoothing_level: float = 0.70
-    volume_per_unit: float = 1.00
-    is_transport_constrained: bool = False
-    created_at: Optional[str] = None# app/domain/models/product.py
-from dataclasses import dataclass
-from typing import Optional
-from datetime import date
 
-@dataclass
-class Product:
-    """製品モデル - 実際のproductsテーブル構造に合わせる"""
-    id: int
-    data_no: Optional[int] = None
-    factory: Optional[str] = None
-    client_code: Optional[int] = None
-    calculation_date: Optional[date] = None
-    production_complete_date: Optional[date] = None
-    modified_factory: Optional[str] = None
-    product_category: Optional[str] = None
-    product_code: Optional[str] = None
-    ac_code: Optional[str] = None
-    processing_content: Optional[str] = None
-    product_name: Optional[str] = None
-    delivery_location: Optional[str] = None
-    box_type: Optional[str] = None
-    capacity: Optional[int] = None
-    grouping_category: Optional[str] = None
-    form_category: Optional[str] = None
-    inspection_category: Optional[str] = None
-    ordering_category: Optional[str] = None
-    regular_replenishment_category: Optional[str] = None
-    lead_time: Optional[int] = None
-    fixed_point_days: Optional[int] = None
-    shipping_factory: Optional[str] = None
-    client_product_code: Optional[str] = None
-    purchasing_org: Optional[str] = None
-    item_group: Optional[str] = None
-    processing_type: Optional[str] = None
-    inventory_transfer_category: Optional[str] = None
-    container_width: Optional[int] = None
-    container_depth: Optional[int] = None
-    container_height: Optional[int] = None
-    stackable: Optional[bool] = True
-    created_at: Optional[str] = None
-    
-    @classmethod
-    def from_dict(cls, data: dict):
-        """辞書からモデルを作成（余分なキーを無視）"""
-        valid_fields = {}
-        for field_name, field_type in cls.__annotations__.items():
-            if field_name in data and data[field_name] is not None:
-                valid_fields[field_name] = data[field_name]
-        return cls(**valid_fields)
+class Product(Base):
+    __tablename__ = "products"
 
-@dataclass
-class ProductConstraint:
-    """製品制約モデル - production_constraintsテーブル構造に合わせる"""
-    product_id: int  # デフォルト値なしの引数を先に
-    daily_capacity: int = 1000
-    smoothing_level: float = 0.70
-    volume_per_unit: float = 1.00
-    is_transport_constrained: bool = False
-    id: Optional[int] = None  # デフォルト値ありの引数を後に
-    created_at: Optional[str] = None
-    updated_at: Optional[str] = None
-    # 結合用フィールド
-    product_code: Optional[str] = None
-    product_name: Optional[str] = None
-    
-    @classmethod
-    def from_dict(cls, data: dict):
-        """辞書からモデルを作成"""
-        valid_fields = {}
-        for field_name, field_type in cls.__annotations__.items():
-            if field_name in data and data[field_name] is not None:
-                # tinyint(1)をboolに変換
-                if field_name == 'is_transport_constrained' and isinstance(data[field_name], int):
-                    valid_fields[field_name] = bool(data[field_name])
-                else:
-                    valid_fields[field_name] = data[field_name]
-        return cls(**valid_fields)
-    updated_at: Optional[str] = None
-    # 結合用フィールド
-    product_code: Optional[str] = None
-    product_name: Optional[str] = None
-    
-    @classmethod
-    def from_dict(cls, data: dict):
-        """辞書からモデルを作成"""
-        valid_fields = {}
-        for field_name, field_type in cls.__annotations__.items():
-            if field_name in data and data[field_name] is not None:
-                # tinyint(1)をboolに変換
-                if field_name == 'is_transport_constrained' and isinstance(data[field_name], int):
-                    valid_fields[field_name] = bool(data[field_name])
-                else:
-                    valid_fields[field_name] = data[field_name]
-        return cls(**valid_fields)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    product_code = Column(String(20), nullable=False)
+    product_name = Column(String(100), nullable=False)
+    capacity = Column(Integer, nullable=True)  # 入り数
+
+    # 容器へのFK (専用/汎用どちらを使うか)
+    used_container_id = Column(Integer, ForeignKey("container_capacity.id"), nullable=True)
+
+    created_at = Column(TIMESTAMP, server_default=text("CURRENT_TIMESTAMP"))
+
+    # リレーション: Container 側に backref
+    used_container = relationship("Container", backref="products")
+
+    def __repr__(self):
+        return (
+            f"<Product(id={self.id}, code={self.product_code}, "
+            f"name={self.product_name}, capacity={self.capacity}, "
+            f"used_container_id={self.used_container_id})>"
+        )
+
+
+class ProductConstraint(Base):
+    __tablename__ = "production_constraints"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    product_id = Column(Integer, ForeignKey("products.id"), nullable=False)
+
+    daily_capacity = Column(Integer, default=1000)
+    smoothing_level = Column(Integer, default=70)  # %で持たせるかfloatで0.7持つか設計次第
+    volume_per_unit = Column(Integer, default=1)
+    is_transport_constrained = Column(Boolean, default=False)
+
+    created_at = Column(TIMESTAMP, server_default=text("CURRENT_TIMESTAMP"))
+    updated_at = Column(TIMESTAMP, server_default=text("CURRENT_TIMESTAMP"))
+
+    # リレーション
+    product = relationship("Product", backref="constraints")
+
+    def __repr__(self):
+        return (
+            f"<ProductConstraint(id={self.id}, product_id={self.product_id}, "
+            f"daily_capacity={self.daily_capacity}, smoothing_level={self.smoothing_level}, "
+            f"volume_per_unit={self.volume_per_unit}, is_transport_constrained={self.is_transport_constrained})>"
+        )

@@ -7,7 +7,7 @@ def create_sidebar() -> str:
     
     page = st.sidebar.radio(
         "メニュー",
-        ["ダッシュボード", "制限設定", "生産計画", "配送便計画"],
+        ["ダッシュボード", "制限設定", "生産計画", "配送便計画", "製品管理"],
         key="main_navigation"
     )
     

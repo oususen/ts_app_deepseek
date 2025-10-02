@@ -130,5 +130,38 @@ class FormComponents:
                 }
         
         return None    
-   
+class FormComponents:
+    ...
+    @staticmethod
+    def product_form(containers) -> Dict[str, Any]:
+        """製品登録フォーム"""
+        with st.form("product_form"):
+            col1, col2 = st.columns(2)
+
+            with col1:
+                product_code = st.text_input("製品コード")
+                product_name = st.text_input("製品名")
+
+            with col2:
+                capacity = st.number_input("入り数", min_value=1, value=1, step=1)
+
+                container_options = {c.id: c.name for c in containers}
+                used_container_id = st.selectbox(
+                    "使用容器",
+                    options=container_options.keys(),
+                    format_func=lambda x: container_options[x] if x in container_options else "未選択"
+                )
+
+            submitted = st.form_submit_button("製品登録")
+
+            if submitted:
+                return {
+                    "product_code": product_code,
+                    "product_name": product_name,
+                    "capacity": capacity,
+                    "used_container_id": used_container_id,
+                }
+
+        return None
+
            
